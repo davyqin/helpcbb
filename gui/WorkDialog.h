@@ -1,8 +1,13 @@
 #pragma once
 
 #include <QDialog>
+
+#include "model/Item.h"
+
 #include <memory>
 #include <string>
+#include <vector>
+#include <boost/shared_ptr.hpp>
 
 class WorkDialog : public QDialog
 {
@@ -14,6 +19,7 @@ public:
 
   std::vector<std::string> csvFiles() const;
   void log(std::string message);
+  void log(const std::vector<boost::shared_ptr<Item> >& items);
 
 signals:
   void workSignal();

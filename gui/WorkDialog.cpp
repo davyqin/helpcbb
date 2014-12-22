@@ -1,6 +1,7 @@
 #include "WorkDialog.h"
 #include "ui_mainDialog.h"
 
+#include <QTextCodec>
 #include <QFileDialog>
 #include <iostream>
 
@@ -19,12 +20,14 @@ public:
 WorkDialog::WorkDialog(QWidget* parent)
 :QDialog(parent), _pimpl(new Pimpl())
 {
+  QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+  QTextCodec::setCodecForLocale(codec);
   _pimpl->ui.setupUi(this);
 
   setWindowTitle(tr("Help CBB"));
 
   connect(_pimpl->ui.browseButton, SIGNAL(clicked()), SLOT(onBrowseFolder()));
-  connect(_pimpl->ui.okButton, SIGNAL(onClick()), SIGNAL(workSignal()));
+  connect(_pimpl->ui.okButton, SIGNAL(clicked()), SIGNAL(workSignal()));
 }
 
 WorkDialog::~WorkDialog(void) {}
@@ -55,4 +58,18 @@ void WorkDialog::onBrowseFolder() {
 void WorkDialog::log(QString message) {
   _pimpl->ui.resultEdit->append(message);
   std::cout<<message.toStdString()<<std::endl;
+}
+
+void WorkDialog::log(const std::vector<boost::shared_ptr<Item> >& items) {
+  QString msgTemplate = QString::fromUtf8("%1 %2 %3 %4 %5");
+  QTextCodec *codec = QTextCodec::codecForName("GB2312"); 
+  for (auto item : items) {
+    const QString id = QString::fromUtf8(item->id().c_str());
+    const QString title = codec->toUnicode(item->title().c_str()); //QString::fromUtf8(item->title().c_str());
+    const QString center = QString::fromUtf8(item->center().c_str());
+    const QString city = QString::fromUtf8(item->city().c_str());
+    const QString local = QString::fromUtf8(item->local().c_str());
+    const QString message = msgTemplate.arg(id).arg(title).arg(center).arg(city).arg(local);
+    _pimpl->ui.resultEdit->append(message);
+  }
 }
