@@ -14,7 +14,6 @@ public:
   Pimpl() {}
 
   /* data */
-  //std::string id;
 };
 
 ItemFactory::ItemFactory(void)
@@ -57,9 +56,9 @@ boost::shared_ptr<Item> ItemFactory::createLocalItem(const std::string& line) {
   boost::shared_ptr<Item> item(new Item(contents.at(0), contents.at(1)));
   item->setLocal(boost::trim_copy(contents.at(2)));
 
+  // The fakeId of local item is id without first 3 numbers
   std::string fakeId = contents.at(0);
-  boost::algorithm::erase_first(fakeId, "401");
-  item->setFakeId(fakeId);
+  item->setFakeId(fakeId.erase(0, 3));
 
   return item;
 }
