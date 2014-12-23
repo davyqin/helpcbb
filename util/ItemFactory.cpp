@@ -30,14 +30,36 @@ boost::shared_ptr<Item> ItemFactory::createStandardItem(const std::string& line)
   std::vector<std::string> contents;
   boost::algorithm::split(contents, line, boost::algorithm::is_any_of(","));
   if (contents.size() != 5) {
-    std::cout << "GK record is not in correct format." << std::endl;
+    std::cout << "Standard record is not in correct format." << std::endl;
     return boost::shared_ptr<Item>();
   }
 
   boost::shared_ptr<Item> item(new Item(contents.at(0), contents.at(1)));
-  item->setCenter(contents.at(2));
-  item->setCity(contents.at(2));
-  item->setLocal(contents.at(3));
+  item->setCenter(boost::trim_copy(contents.at(2)));
+  item->setCity(boost::trim_copy(contents.at(3)));
+  item->setLocal(boost::trim_copy(contents.at(4)));
+
+  return item;
+}
+
+boost::shared_ptr<Item> ItemFactory::createLocalItem(const std::string& line) {
+  if (line.empty()) {
+    return boost::shared_ptr<Item>();
+  }
+
+  std::vector<std::string> contents;
+  boost::algorithm::split(contents, line, boost::algorithm::is_any_of(","));
+  if (contents.size() != 3) {
+    std::cout << "Local record is not in correct format." << std::endl;
+    return boost::shared_ptr<Item>();
+  }
+
+  boost::shared_ptr<Item> item(new Item(contents.at(0), contents.at(1)));
+  item->setLocal(boost::trim_copy(contents.at(2)));
+
+  std::string fakeId = contents.at(0);
+  boost::algorithm::erase_first(fakeId, "401");
+  item->setFakeId(fakeId);
 
   return item;
 }

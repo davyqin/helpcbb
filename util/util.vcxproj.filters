@@ -24,12 +24,18 @@
     <ClInclude Include="ReportFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Comparator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ItemFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReportFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Comparator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

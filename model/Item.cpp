@@ -4,28 +4,28 @@ class Item::Pimpl
 {
 public:
 
-  //Pimpl() {}
-
   Pimpl(const std::string& id, const std::string& title) 
-  : id(id), title(title) {}
+  : id(id), fakeId(id), title(title), status(UNKNOWN) {}
 
   /* data */
   std::string id;
+  std::string fakeId;
   std::string title;
   std::string center;
   std::string city;
   std::string local;
+  //std::string difference;
+  ItemStatus status;
 };
-
-//Item::Item(void)
-//:_pimpl(new Pimpl())
-//{
-//}
 
 Item::Item(const std::string& id, const std::string& title)
 :_pimpl(new Pimpl(id, title)) {}
 
 Item::~Item(void) {}
+
+void Item::setFakeId(const std::string& value) {
+  _pimpl->fakeId = value;
+}
 
 void Item::setCenter(const std::string value) {
   _pimpl->center = value;
@@ -39,8 +39,16 @@ void Item::setLocal(const std::string value) {
   _pimpl->local = value;
 }
 
+void Item::setStatus(ItemStatus status) {
+  _pimpl->status = status;
+}
+
 std::string Item::id() const {
   return _pimpl->id;
+}
+
+std::string Item::fakeId() const {
+  return _pimpl->fakeId;
 }
 
 std::string Item::title() const {
@@ -58,3 +66,6 @@ std::string Item::local() const {
   return _pimpl->local;
 }
 
+Item::ItemStatus Item::status() const {
+  return _pimpl->status;
+}

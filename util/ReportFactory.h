@@ -1,10 +1,9 @@
 #pragma once
+#include "model/Report.h"
 
 #include <memory>
 #include <string>
 #include <boost/shared_ptr.hpp>
-
-class Report;
 
 class ReportFactory
 {
@@ -12,7 +11,7 @@ public:
   ReportFactory(void);
   ~ReportFactory(void);
 
-  boost::shared_ptr<Report> createReport(const std::string& cvsFile);
+  boost::shared_ptr<Report> createReport(const std::string& cvsFile, Report::ReportType reportType);
 
 private:
   class Pimpl;

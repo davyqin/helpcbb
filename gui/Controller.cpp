@@ -2,6 +2,7 @@
 #include "WorkDialog.h"
 #include "model/Report.h"
 #include "util/ReportFactory.h"
+#include "util/Comparator.h"
 
 #include <string>
 #include <iostream>
@@ -12,7 +13,8 @@ public:
   Pimpl() {}
   
   WorkDialog dialog;
-  boost::shared_ptr<Report> gkReport;
+  boost::shared_ptr<Report> standardReport;
+  boost::shared_ptr<Report> localReport;
 };
 
 Controller::Controller(QObject *parent)
@@ -24,17 +26,20 @@ Controller::Controller(QObject *parent)
 Controller::~Controller(void) {}
 
 void Controller::activate() {
-  _pimpl->dialog.exec();
+  _pimpl->dialog.show();
 }
 
 void Controller::onWork() {
   const std::vector<std::string> csvFiles = _pimpl->dialog.csvFiles();
   if (csvFiles.empty()) {
     std::cout<<"No csv files are selected."<<std::endl;
-	return;
+	  return;
   }
 
   ReportFactory reportFactory;
-  _pimpl->gkReport = reportFactory.createReport(csvFiles.at(0));
-  //_pimpl->dialog.log(_pimpl->gkReport->allItems());
+  _pimpl->standardReport = reportFactory.createReport(csvFiles.at(0), Report::STANDARD);
+  _pimpl->localReport = reportFactory.createReport(csvFiles.at(1), Report::LOCAL);
+
+  Comparator comparator(_pimpl->standardReport, _pimpl->localReport);
+  _pimpl->dialog.log(comparator.compareLocal());
 }

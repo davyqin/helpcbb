@@ -9,6 +9,12 @@ class Item;
 class Report
 {
 public:
+  enum ReportType {
+    STANDARD,
+    CITY,
+    LOCAL
+  };
+
   Report(void);
 
   Report(const std::vector<boost::shared_ptr<Item> >& items);

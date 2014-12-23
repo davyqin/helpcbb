@@ -24,7 +24,7 @@ ReportFactory::ReportFactory(void)
 
 ReportFactory::~ReportFactory(void) {}
 
-boost::shared_ptr<Report> ReportFactory::createReport(const std::string& cvsFile) {
+boost::shared_ptr<Report> ReportFactory::createReport(const std::string& cvsFile, Report::ReportType reportType) {
   const boost::filesystem::path sourceFolder(cvsFile);
   if (!boost::filesystem::exists(sourceFolder)) {
 	  std::cout << "File "<< cvsFile << " does not exist! " << std::endl;
@@ -36,7 +36,8 @@ boost::shared_ptr<Report> ReportFactory::createReport(const std::string& cvsFile
   ItemFactory itemFacory;
   std::vector<boost::shared_ptr<Item> > items;
   while (getline(filein, item)) {
-    items.push_back(itemFacory.createStandardItem(item));
+    if (reportType == Report::STANDARD) items.push_back(itemFacory.createStandardItem(item));
+    if (reportType == Report::LOCAL) items.push_back(itemFacory.createLocalItem(item));
   }
 
   return boost::shared_ptr<Report>(new Report(items));

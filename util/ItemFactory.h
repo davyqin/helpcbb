@@ -12,6 +12,7 @@ public:
   ~ItemFactory(void);
 
   boost::shared_ptr<Item> createStandardItem(const std::string& line);
+  boost::shared_ptr<Item> createLocalItem(const std::string& line);
 
 private:
   class Pimpl;

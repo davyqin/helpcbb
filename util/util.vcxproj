@@ -136,10 +136,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Comparator.h" />
     <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="ReportFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Comparator.cpp" />
     <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="ReportFactory.cpp" />
   </ItemGroup>

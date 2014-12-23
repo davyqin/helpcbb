@@ -23,12 +23,12 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>GuoKu:</string>
+            <string>Standard:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="standardLineEdit">
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -41,12 +41,12 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Xian:    </string>
+            <string>Local: </string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2">
+          <widget class="QLineEdit" name="localLineEdit">
            <property name="readOnly">
             <bool>true</bool>
            </property>
