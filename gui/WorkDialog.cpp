@@ -5,6 +5,10 @@
 #include <QFileDialog>
 #include <iostream>
 
+namespace {
+  const QString MESSAGE_TEMPLATE =  QString::fromUtf8("%1 %2-----> ");
+}
+
 class WorkDialog::Pimpl
 {
 public:
@@ -66,20 +70,29 @@ void WorkDialog::log(const std::vector<boost::shared_ptr<Item> >& items) {
   _pimpl->ui.resultEdit->clear();
   QTextCodec *codec = QTextCodec::codecForName("GB2312"); 
   for (auto item : items) {
+
     const QString id = QString::fromUtf8(item->id().c_str());
     const QString title = codec->toUnicode(item->title().c_str());
     const QString local = QString::fromUtf8(item->local().c_str());
-
-    if (item->status() == Item::SKIP || item->status() == Item::MATCHING) continue;
-
     QColor currentColor = _pimpl->ui.resultEdit->textColor();
+
+#if 0
+    if (item->status() == Item::MATCHING) {
+      const QString itemStatus = codec->toUnicode("MACHING");
+      const QString message = MESSAGE_TEMPLATE.arg(id).arg(title);
+        //QString::fromUtf8("%1 %2-----> ").arg(id).arg(title);
+      _pimpl->ui.resultEdit->append(message);      
+      _pimpl->ui.resultEdit->setTextColor(Qt::green);
+      _pimpl->ui.resultEdit->insertPlainText(itemStatus);
+    }
+#endif
+
     if (item->status() == Item::LOST) {
       const QString itemStatus = codec->toUnicode("LOST");
       const QString message = QString::fromUtf8("%1 %2-----> ").arg(id).arg(title);
       _pimpl->ui.resultEdit->append(message);      
       _pimpl->ui.resultEdit->setTextColor(Qt::red);
-      _pimpl->ui.resultEdit->insertPlainText(itemStatus);
-      
+      _pimpl->ui.resultEdit->insertPlainText(itemStatus);      
     }
 
     if (item->status() == Item::TITLE_MATCHING) {
@@ -88,6 +101,34 @@ void WorkDialog::log(const std::vector<boost::shared_ptr<Item> >& items) {
       _pimpl->ui.resultEdit->setTextColor(Qt::blue);
       _pimpl->ui.resultEdit->insertPlainText(local);
     }
+
+#if 0
+    if (item->status() == Item::SKIP) {
+      const QString itemStatus = codec->toUnicode("SKIP");
+      const QString message = QString::fromUtf8("%1 %2-----> ").arg(id).arg(title);
+      _pimpl->ui.resultEdit->append(message);      
+      _pimpl->ui.resultEdit->setTextColor(Qt::green);
+      _pimpl->ui.resultEdit->insertPlainText(itemStatus);
+    }
+#endif
+
+#if 0
+    if (item->status() == Item::COMBINE) {
+      const QString itemStatus = codec->toUnicode("COMBINE");
+      const QString message = QString::fromUtf8("%1 %2-----> ").arg(id).arg(title);
+      _pimpl->ui.resultEdit->append(message);      
+      _pimpl->ui.resultEdit->setTextColor(Qt::blue);
+      _pimpl->ui.resultEdit->insertPlainText(itemStatus);
+
+      std::vector<boost::shared_ptr<const Item> > combinedItems = item->combinedItems();
+      for (auto combinedItem : combinedItems) {
+        const QString combinedId = QString::fromUtf8(combinedItem->id().c_str());
+        const QString combinedTitle = codec->toUnicode(combinedItem->title().c_str());
+        const QString combineMessage = QString::fromUtf8("---->%1 %2").arg(combinedId).arg(combinedTitle);
+        _pimpl->ui.resultEdit->append(combineMessage);
+      }
+    }
+#endif
     _pimpl->ui.resultEdit->setTextColor(currentColor);
   }
 }
