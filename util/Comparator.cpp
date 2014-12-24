@@ -91,13 +91,15 @@ std::vector<boost::shared_ptr<Item> > Comparator::compareLocal() const {
     if (localItem->status() != Item::LOST) continue;
     const std::string fakeId = localItem->fakeId();
     long double localValue = boost::lexical_cast<long double>(localItem->local());
+    int itemNum = 0;
     for (auto standardItem : standardItems) {
       if (boost::algorithm::starts_with(standardItem->id(), fakeId)) {
+        ++itemNum;
         localValue -= boost::lexical_cast<long double>(standardItem->local());
       }
     }
 
-    if (abs(localValue) < EPSILON) localItem->setStatus(Item::MATCHING);
+    if ((itemNum > 0) && (abs(localValue) < EPSILON)) localItem->setStatus(Item::MATCHING);
   }
 
   // 4. Mark standard items
