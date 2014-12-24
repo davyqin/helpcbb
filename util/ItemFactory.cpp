@@ -54,7 +54,9 @@ boost::shared_ptr<Item> ItemFactory::createLocalItem(const std::string& line) {
   }
 
   boost::shared_ptr<Item> item(new Item(contents.at(0), contents.at(1)));
-  item->setLocal(boost::trim_copy(contents.at(2)));
+  std::string value = boost::trim_copy(contents.at(2));
+  if (value.empty()) value = "0.00";
+  item->setLocal(value);
 
   // The fakeId of local item is id without first 3 numbers
   std::string fakeId = contents.at(0);

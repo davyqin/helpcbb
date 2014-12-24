@@ -18,7 +18,7 @@ public:
 
 
 WorkDialog::WorkDialog(QWidget* parent)
-:QDialog(parent), _pimpl(new Pimpl())
+:QDialog(parent, Qt::WindowMinMaxButtonsHint), _pimpl(new Pimpl())
 {
   QTextCodec *codec = QTextCodec::codecForName("UTF-8");
   QTextCodec::setCodecForLocale(codec);

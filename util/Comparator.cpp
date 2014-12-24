@@ -6,9 +6,10 @@
 #include <string>
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
+#include <boost/algorithm/string.hpp>
 
 namespace {
-  const double IGNOREVALUE = 0.000001;
+  const long double EPSILON = 0.0000001;
 }
 
 class Comparator::Pimpl
@@ -75,7 +76,7 @@ std::vector<boost::shared_ptr<Item> > Comparator::compareLocal() const {
     const long double realLocal = boost::lexical_cast<long double>(item->local());
     const long double difference = standardLocal - realLocal;
 
-    if (difference < IGNOREVALUE) {
+    if (abs(difference) < EPSILON) {
       item->setStatus(Item::MATCHING);
     }
     else {
@@ -86,6 +87,18 @@ std::vector<boost::shared_ptr<Item> > Comparator::compareLocal() const {
   }
 
   // 3. Re-verify LOST items
+  for (auto localItem : localItems) {
+    if (localItem->status() != Item::LOST) continue;
+    const std::string fakeId = localItem->fakeId();
+    long double localValue = boost::lexical_cast<long double>(localItem->local());
+    for (auto standardItem : standardItems) {
+      if (boost::algorithm::starts_with(standardItem->id(), fakeId)) {
+        localValue -= boost::lexical_cast<long double>(standardItem->local());
+      }
+    }
+
+    if (abs(localValue) < EPSILON) localItem->setStatus(Item::MATCHING);
+  }
 
   // 4. Mark standard items
   for (auto item : standardItems) {
