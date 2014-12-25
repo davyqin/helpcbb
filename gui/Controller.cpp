@@ -14,6 +14,7 @@ public:
   
   WorkDialog dialog;
   boost::shared_ptr<Report> standardReport;
+  boost::shared_ptr<Report> dReport;
   boost::shared_ptr<Report> localReport;
 };
 
@@ -38,8 +39,10 @@ void Controller::onWork() {
 
   ReportFactory reportFactory;
   _pimpl->standardReport = reportFactory.createReport(csvFiles.at(0), Report::STANDARD);
-  _pimpl->localReport = reportFactory.createReport(csvFiles.at(1), Report::LOCAL);
+  _pimpl->dReport = reportFactory.createReport(csvFiles.at(1), Report::DREPORT);
+  _pimpl->localReport = reportFactory.createReport(csvFiles.at(2), Report::LOCAL);
 
-  Comparator comparator(_pimpl->standardReport, _pimpl->localReport);
-  _pimpl->dialog.log(comparator.compareLocal());
+  Comparator comparator(_pimpl->standardReport);
+  _pimpl->dialog.setDReportResult(comparator.compareDReport(_pimpl->dReport));
+  _pimpl->dialog.setLocalReportResult(comparator.compareLocal(_pimpl->localReport));
 }

@@ -18,8 +18,8 @@ public:
   ~WorkDialog(void);
 
   std::vector<std::string> csvFiles() const;
-  void log(std::string message);
-  void log(const std::vector<boost::shared_ptr<Item> >& items);
+  void setDReportResult(const std::vector<boost::shared_ptr<Item> >& items);
+  void setLocalReportResult(const std::vector<boost::shared_ptr<Item> >& items);
 
 signals:
   void workSignal();

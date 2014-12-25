@@ -37,11 +37,25 @@
         </layout>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>DReport: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="dReportLineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Local: </string>
+            <string>Local:   </string>
            </property>
           </widget>
          </item>
@@ -66,10 +80,34 @@
     </layout>
    </item>
    <item>
-    <widget class="QTextEdit" name="resultEdit">
-     <property name="readOnly">
-      <bool>true</bool>
+    <widget class="QTabWidget" name="resultTabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>D Report</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QTextEdit" name="resultEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="localTab">
+      <attribute name="title">
+       <string>Local Report</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QTextEdit" name="localResultEdit"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -105,7 +143,7 @@
      <item>
       <widget class="QPushButton" name="okButton">
        <property name="text">
-        <string>OK</string>
+        <string>Compare</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>

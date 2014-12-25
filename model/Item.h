@@ -12,8 +12,9 @@ public:
     UNKNOWN,
     SKIP,
     MATCHING,
-    COMBINE,
-    TITLE_MATCHING,
+    MISMATCHING,
+    COMBINE_MATCHING,
+    COMBINE_MISMATCHING,
     LOST
   };
 
@@ -25,7 +26,7 @@ public:
   void setCity(const std::string value);
   void setLocal(const std::string value);
   void setStatus(ItemStatus status);
-  void combineItem(boost::shared_ptr<const Item> item);
+  void combineItem(boost::shared_ptr<Item> item);
 
   std::string id() const;
   std::string fakeId() const;
@@ -34,7 +35,7 @@ public:
   std::string city() const;
   std::string local() const;
   Item::ItemStatus status() const;
-  std::vector<boost::shared_ptr<const Item> > combinedItems() const;
+  std::vector<boost::shared_ptr<Item> > combinedItems() const;
 
 private:
   class Pimpl;

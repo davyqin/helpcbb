@@ -15,7 +15,7 @@ public:
   std::string city;
   std::string local;
   ItemStatus status;
-  std::vector<boost::shared_ptr<const Item> > combinedItems;
+  std::vector<boost::shared_ptr<Item> > combinedItems;
 };
 
 Item::Item(const std::string& id, const std::string& title)
@@ -43,7 +43,7 @@ void Item::setStatus(ItemStatus status) {
   _pimpl->status = status;
 }
 
-void Item::combineItem(boost::shared_ptr<const Item> item) {
+void Item::combineItem(boost::shared_ptr<Item> item) {
   _pimpl->combinedItems.push_back(item);
 }
 
@@ -74,7 +74,7 @@ Item::ItemStatus Item::status() const {
   return _pimpl->status;
 }
 
-std::vector<boost::shared_ptr<const Item> > 
+std::vector<boost::shared_ptr<Item> > 
 Item::combinedItems() const {
   return _pimpl->combinedItems;
 }
