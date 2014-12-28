@@ -7,6 +7,12 @@ public:
   Pimpl(const std::string& id, const std::string& title) 
   : id(id), fakeId(id), title(title), status(UNKNOWN) {}
 
+  Pimpl(const std::string& id, const std::string& fakeId, 
+        const std::string& title, const std::string& center, 
+        const std::string& city, const std::string& local,
+        const ItemStatus status)
+  : id(id), fakeId(fakeId), title(title), center(center), city(city), local(local), status(status) {}
+
   /* data */
   std::string id;
   std::string fakeId;
@@ -20,6 +26,10 @@ public:
 
 Item::Item(const std::string& id, const std::string& title)
 :_pimpl(new Pimpl(id, title)) {}
+
+Item::Item(const Item& item) 
+:_pimpl(new Pimpl(item.id(), item.fakeId(), item.title(), item.center(), 
+                  item.city(), item.local(), item.status())) {}
 
 Item::~Item(void) {}
 

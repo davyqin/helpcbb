@@ -60,7 +60,7 @@ boost::shared_ptr<Item> ItemFactory::createDItem(const std::string& line) {
   }
   boost::shared_ptr<Item> item(new Item(id, title));
   std::string value = boost::trim_copy(contents.at(2));
-  if (value.empty()) {
+  if (value.empty() || value == "0.00") {
     value = "0.00"; 
     item->setStatus(Item::SKIP);
   }

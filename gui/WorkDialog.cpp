@@ -69,24 +69,24 @@ namespace {
       }
 #endif
     
-    #if 1
-        if (item->status() == Item::COMBINE_MISMATCHING) {
-          const QString itemStatus = codec->toUnicode("COMBINE MISMATCHING");
-          edit->append(message);
-          edit->setTextColor(Qt::red);
-          edit->insertPlainText(itemStatus);
+#if 1
+      if (item->status() == Item::COMBINE_MISMATCHING) {
+        const QString itemStatus = codec->toUnicode("COMBINE MISMATCHING");
+        edit->append(message);
+        edit->setTextColor(Qt::red);
+        edit->insertPlainText(itemStatus);
     
-          std::vector<boost::shared_ptr<Item> > combinedItems = item->combinedItems();
-          for (auto combinedItem : combinedItems) {
-            const QString combinedId = QString::fromUtf8(combinedItem->id().c_str());
-            const QString combinedTitle = codec->toUnicode(combinedItem->title().c_str());
-            const QString combineMessage = QString::fromUtf8("---->%1 %2").arg(combinedId).arg(combinedTitle);
-            edit->append(combineMessage);
-          }
+        std::vector<boost::shared_ptr<Item> > combinedItems = item->combinedItems();
+        for (auto combinedItem : combinedItems) {
+          const QString combinedId = QString::fromUtf8(combinedItem->id().c_str());
+          const QString combinedTitle = codec->toUnicode(combinedItem->title().c_str());
+          const QString combineMessage = QString::fromUtf8("---->%1 %2").arg(combinedId).arg(combinedTitle);
+          edit->append(combineMessage);
         }
-    #endif
-        edit->setTextColor(currentColor);
       }
+#endif
+      edit->setTextColor(currentColor);
+    }
   }
 }
 
@@ -98,6 +98,7 @@ public:
   /* data */
   Ui::mainDialog ui;
   QString standardCSV;
+  QString cReportCSV;
   QString dReportCSV;
   QString localCSV;
 };
@@ -121,6 +122,7 @@ WorkDialog::~WorkDialog(void) {}
 std::vector<std::string> WorkDialog::csvFiles() const {
   std::vector<std::string> files;
   files.push_back(_pimpl->standardCSV.toStdString());
+  files.push_back(_pimpl->cReportCSV.toStdString());
   files.push_back(_pimpl->dReportCSV.toStdString());
   files.push_back(_pimpl->localCSV.toStdString());
   return files;
@@ -133,13 +135,19 @@ void WorkDialog::onBrowseFolder() {
   browser.setNameFilter(tr("CSV (*.csv)"));
   if(browser.exec() == QFileDialog::Accepted) {
     _pimpl->standardCSV = browser.selectedFiles().at(0);
-    _pimpl->dReportCSV = browser.selectedFiles().at(1);
-    _pimpl->localCSV = browser.selectedFiles().at(2);
+    _pimpl->cReportCSV = browser.selectedFiles().at(1);
+    _pimpl->dReportCSV = browser.selectedFiles().at(2);
+    _pimpl->localCSV = browser.selectedFiles().at(3);
 
     _pimpl->ui.standardLineEdit->setText(_pimpl->standardCSV);
+    _pimpl->ui.cReportLineEdit->setText(_pimpl->cReportCSV);
     _pimpl->ui.dReportLineEdit->setText(_pimpl->dReportCSV);
     _pimpl->ui.localLineEdit->setText(_pimpl->localCSV);
   }
+}
+
+void WorkDialog::setCReportResult(const std::vector<boost::shared_ptr<Item> >& items) {
+  printResult(_pimpl->ui.cResultEdit, items);
 }
 
 void WorkDialog::setDReportResult(const std::vector<boost::shared_ptr<Item> >& items) {

@@ -14,6 +14,8 @@ public:
 
   ~Comparator(void);
 
+  std::vector<boost::shared_ptr<Item> > compareCReport(boost::shared_ptr<Report> dReport) const;
+
   std::vector<boost::shared_ptr<Item> > compareDReport(boost::shared_ptr<Report> dReport) const;
 
   std::vector<boost::shared_ptr<Item> > compareLocal(boost::shared_ptr<Report> localReport) const;

@@ -37,11 +37,25 @@
         </layout>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>C Report:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="cReportLineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>DReport: </string>
+            <string>D Report:</string>
            </property>
           </widget>
          </item>
@@ -84,7 +98,17 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="cReportTab">
+      <attribute name="title">
+       <string>C Report</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QTextEdit" name="cResultEdit"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="dReportTab">
       <attribute name="title">
        <string>D Report</string>
       </attribute>

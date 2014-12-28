@@ -10,6 +10,7 @@ class Item
 public:
   enum ItemStatus {
     UNKNOWN,
+    DELAY,
     SKIP,
     MATCHING,
     MISMATCHING,
@@ -19,6 +20,9 @@ public:
   };
 
   Item(const std::string& id, const std::string& title);
+
+  Item(const Item& item);
+
   ~Item(void);
 
   void setFakeId(const std::string& value);

@@ -2,6 +2,7 @@
 
 #include "ItemFactory.h"
 #include "model/Report.h"
+#include "model/Item.h"
 
 #include <iostream>
 
@@ -32,21 +33,36 @@ boost::shared_ptr<Report> ReportFactory::createReport(const std::string& cvsFile
   }
 
   std::ifstream filein(cvsFile);
-  std::string item;
+  std::string itemLine;
   ItemFactory itemFacory;
   std::vector<boost::shared_ptr<Item> > items;
-  while (getline(filein, item)) {
+  boost::shared_ptr<Item> newItem;
+  while (getline(filein, itemLine)) {
+    newItem.reset();
     if (reportType == Report::STANDARD) {
-      items.push_back(itemFacory.createStandardItem(item));
+      newItem = itemFacory.createStandardItem(itemLine);
     }
 
     if (reportType == Report::DREPORT) {
-      items.push_back(itemFacory.createDItem(item));
+      newItem = itemFacory.createDItem(itemLine);
     }
 
     if (reportType == Report::LOCAL) {
-      items.push_back(itemFacory.createLocalItem(item));
+      newItem = itemFacory.createLocalItem(itemLine);
     }
+
+    if (newItem->status() != Item::SKIP && newItem->id() != "999999999") {
+      auto iter = std::find_if(items.begin(), items.end(),
+        [&](boost::shared_ptr<Item> item) {
+        return (item->id() == newItem->id() && item->status() != Item::SKIP);
+      });
+
+      if (iter != items.end()) {
+        throw std::logic_error("Found duplicated id: " + newItem->id());
+      }
+    }
+
+    items.push_back(newItem);
   }
 
   return boost::shared_ptr<Report>(new Report(items));

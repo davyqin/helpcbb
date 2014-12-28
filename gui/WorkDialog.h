@@ -18,6 +18,7 @@ public:
   ~WorkDialog(void);
 
   std::vector<std::string> csvFiles() const;
+  void setCReportResult(const std::vector<boost::shared_ptr<Item> >& items);
   void setDReportResult(const std::vector<boost::shared_ptr<Item> >& items);
   void setLocalReportResult(const std::vector<boost::shared_ptr<Item> >& items);
 
