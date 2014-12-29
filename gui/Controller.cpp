@@ -35,11 +35,6 @@ void Controller::activate() {
 
 void Controller::onWork() {
   const std::vector<std::string> csvFiles = _pimpl->dialog.csvFiles();
-  if (csvFiles.empty()) {
-    std::cout<<"No csv files are selected."<<std::endl;
-	  return;
-  }
-
   ReportFactory reportFactory;
   try {
     _pimpl->standardReport = reportFactory.createReport(csvFiles.at(0), Report::STANDARD);

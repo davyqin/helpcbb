@@ -9,7 +9,8 @@
 #include <boost/algorithm/string.hpp>
 
 namespace {
-  const long double EPSILON = 0.0000001;
+  const long double EPSILON = 0.000001;
+  boost::format FMT("%.2f");
 
   std::vector<boost::shared_ptr<Item> >
   cloneData(const std::vector<boost::shared_ptr<Item> >& items) {
@@ -99,8 +100,7 @@ Comparator::compareCReport(boost::shared_ptr<Report> cReport) const {
     }
     else {
       item->setStatus(Item::MISMATCHING);
-      boost::format fmt("%.2f");
-      item->setLocal(boost::lexical_cast<std::string>(fmt % difference));
+      item->setLocal(boost::lexical_cast<std::string>(FMT % difference));
     }
   }
 
@@ -128,6 +128,7 @@ Comparator::compareCReport(boost::shared_ptr<Report> cReport) const {
 
     if (!localItem->combinedItems().empty() && (abs(localValue) > EPSILON)) {
       localItem->setStatus(Item::COMBINE_MISMATCHING);
+      localItem->setLocal(boost::lexical_cast<std::string>(FMT % localValue));
       for (auto combineItem : localItem->combinedItems()) {
         combineItem->setStatus(Item::MISMATCHING);
       }
@@ -146,8 +147,27 @@ Comparator::compareCReport(boost::shared_ptr<Report> cReport) const {
     long double localValue = boost::lexical_cast<long double>(localItem->local());
 
     for (auto standardItem : standardItems) {
-      if (boost::algorithm::starts_with(standardItem->id(), id) &&
-        (standardItem->status() != Item::MATCHING)) {
+      if (boost::algorithm::starts_with(standardItem->id(), id)) {
+        auto iter = std::find_if(localItems.begin(), localItems.end(),
+          [&](boost::shared_ptr<Item> item) {
+            if (item->id().size() == id.size()) return false;
+            const std::string tempId = item->fakeId();
+            //            return (tempId == standardItem->id());
+            if (tempId == standardItem->id()) return true;
+
+            std::vector<boost::shared_ptr<Item> > combineItems = item->combinedItems();
+            auto combineIter = 
+              std::find_if(combineItems.begin(), combineItems.end(), 
+              [&](boost::shared_ptr<Item> item) {
+                return (item->id() == standardItem->id());
+            });
+            return (combineIter != combineItems.end());
+        });
+
+        if (iter != localItems.end()) {
+          continue;
+        }
+
         localValue -= boost::lexical_cast<long double>(standardItem->city());
         localItem->combineItem(standardItem);
       }
@@ -162,6 +182,7 @@ Comparator::compareCReport(boost::shared_ptr<Report> cReport) const {
 
     if (!localItem->combinedItems().empty() && (abs(localValue) > EPSILON)) {
       localItem->setStatus(Item::COMBINE_MISMATCHING);
+      localItem->setLocal(boost::lexical_cast<std::string>(FMT % localValue));
       for (auto combineItem : localItem->combinedItems()) {
         combineItem->setStatus(Item::MISMATCHING);
       }
@@ -192,6 +213,7 @@ Comparator::compareCReport(boost::shared_ptr<Report> cReport) const {
 
     if (!localItem->combinedItems().empty() && (abs(localValue) > EPSILON)) {
       localItem->setStatus(Item::COMBINE_MISMATCHING);
+      localItem->setLocal(boost::lexical_cast<std::string>(FMT % localValue));
       for (auto combineItem : localItem->combinedItems()) {
         combineItem->setStatus(Item::MISMATCHING);
       }
@@ -272,8 +294,7 @@ Comparator::compareDReport(boost::shared_ptr<Report> dReport) const {
     }
     else {
       item->setStatus(Item::MISMATCHING);
-      boost::format fmt("%.2f");
-      item->setLocal(boost::lexical_cast<std::string>(fmt % difference));
+      item->setLocal(boost::lexical_cast<std::string>(FMT % difference));
     }
   }
 
@@ -319,8 +340,27 @@ Comparator::compareDReport(boost::shared_ptr<Report> dReport) const {
     long double localValue = boost::lexical_cast<long double>(localItem->local());
 
     for (auto standardItem : standardItems) {
-      if (boost::algorithm::starts_with(standardItem->id(), id) && 
-          (standardItem->status() != Item::MATCHING)) {
+      if (boost::algorithm::starts_with(standardItem->id(), id)) {
+        auto iter = std::find_if(localItems.begin(), localItems.end(),
+          [&](boost::shared_ptr<Item> item) {
+            if (item->id().size() == id.size()) return false;
+            const std::string tempId = item->fakeId();
+//            return (tempId == standardItem->id());
+            if (tempId == standardItem->id()) return true;
+
+            std::vector<boost::shared_ptr<Item> > combineItems = item->combinedItems();
+            auto combineIter = 
+              std::find_if(combineItems.begin(), combineItems.end(), 
+                [&](boost::shared_ptr<Item> item) {
+                  return (item->id() == standardItem->id());
+              });
+            return (combineIter != combineItems.end());
+          });
+
+        if (iter != localItems.end()) {
+          continue;
+        }
+
         localValue -= boost::lexical_cast<long double>(standardItem->local());
         localItem->combineItem(standardItem);
       }
@@ -335,6 +375,7 @@ Comparator::compareDReport(boost::shared_ptr<Report> dReport) const {
 
     if (!localItem->combinedItems().empty() && (abs(localValue) > EPSILON)) {
       localItem->setStatus(Item::COMBINE_MISMATCHING);
+      localItem->setLocal(boost::lexical_cast<std::string>(FMT % localValue));
       for (auto combineItem : localItem->combinedItems()) {
         combineItem->setStatus(Item::MISMATCHING);
       }
@@ -365,6 +406,7 @@ Comparator::compareDReport(boost::shared_ptr<Report> dReport) const {
 
     if (!localItem->combinedItems().empty() && (abs(localValue) > EPSILON)) {
       localItem->setStatus(Item::COMBINE_MISMATCHING);
+      localItem->setLocal(boost::lexical_cast<std::string>(FMT % localValue));
       for (auto combineItem : localItem->combinedItems()) {
         combineItem->setStatus(Item::MISMATCHING);
       }
@@ -436,8 +478,7 @@ Comparator::compareLocal(boost::shared_ptr<Report> localReport) const {
     }
     else {
       item->setStatus(Item::MISMATCHING);
-      boost::format fmt("%.2f"); 
-      item->setLocal(boost::lexical_cast<std::string>(fmt % difference));
+      item->setLocal(boost::lexical_cast<std::string>(FMT % difference));
     }
   }
 

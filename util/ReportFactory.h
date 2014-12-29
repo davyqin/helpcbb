@@ -11,7 +11,7 @@ public:
   ReportFactory(void);
   ~ReportFactory(void);
 
-  boost::shared_ptr<Report> createReport(const std::string& cvsFile, Report::ReportType reportType);
+  boost::shared_ptr<Report> createReport(const std::string& csvFile, Report::ReportType reportType);
 
 private:
   class Pimpl;

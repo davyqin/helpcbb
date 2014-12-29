@@ -29,7 +29,8 @@ boost::shared_ptr<Item> ItemFactory::createStandardItem(const std::string& line)
   std::vector<std::string> contents;
   boost::algorithm::split(contents, line, boost::algorithm::is_any_of(","));
   if (contents.size() != 5) {
-    std::cout << "Standard record is not in correct format." << std::endl;
+    std::cout << "Standard record is not in correct format: " << line << std::endl;
+    throw std::logic_error("Standard record is not in correct format: " + line);
     return boost::shared_ptr<Item>();
   }
 

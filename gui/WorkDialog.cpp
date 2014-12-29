@@ -36,9 +36,10 @@ namespace {
       }
     
       if (item->status() == Item::MISMATCHING) {
-        const QString itemStatus = codec->toUnicode("MISMATCHING");
+        const QString itemStatus = codec->toUnicode("MISMATCHING ");
         edit->append(message);
         edit->setTextColor(Qt::red);
+        edit->insertPlainText(itemStatus);
         edit->insertPlainText(local);
       }
     
@@ -71,10 +72,11 @@ namespace {
     
 #if 1
       if (item->status() == Item::COMBINE_MISMATCHING) {
-        const QString itemStatus = codec->toUnicode("COMBINE MISMATCHING");
+        const QString itemStatus = codec->toUnicode("COMBINE MISMATCHING ");
         edit->append(message);
-        edit->setTextColor(Qt::red);
+        edit->setTextColor(Qt::red);        
         edit->insertPlainText(itemStatus);
+        edit->insertPlainText(local);
     
         std::vector<boost::shared_ptr<Item> > combinedItems = item->combinedItems();
         for (auto combinedItem : combinedItems) {

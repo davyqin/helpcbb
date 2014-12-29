@@ -25,14 +25,15 @@ ReportFactory::ReportFactory(void)
 
 ReportFactory::~ReportFactory(void) {}
 
-boost::shared_ptr<Report> ReportFactory::createReport(const std::string& cvsFile, Report::ReportType reportType) {
-  const boost::filesystem::path sourceFolder(cvsFile);
+boost::shared_ptr<Report> ReportFactory::createReport(const std::string& csvFile, Report::ReportType reportType) {
+  const boost::filesystem::path sourceFolder(csvFile);
   if (!boost::filesystem::exists(sourceFolder)) {
-	  std::cout << "File "<< cvsFile << " does not exist! " << std::endl;
+	  std::cout << "CSV File "<< csvFile << " does not exist! " << std::endl;
+    throw std::logic_error("CSV File " + csvFile + " does not exist!");
 	  return boost::shared_ptr<Report>();
   }
 
-  std::ifstream filein(cvsFile);
+  std::ifstream filein(csvFile);
   std::string itemLine;
   ItemFactory itemFacory;
   std::vector<boost::shared_ptr<Item> > items;
